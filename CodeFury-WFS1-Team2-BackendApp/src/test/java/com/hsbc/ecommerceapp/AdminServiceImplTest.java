@@ -55,7 +55,7 @@ public class AdminServiceImplTest {
         product.setPrice(5.5);
         adminService.updateProduct(product);
         Product updatedProduct = productService.getProductById("Product1");
-        assertEquals(3.5, updatedProduct.getPrice());
+        assertEquals(5.5, updatedProduct.getPrice());
     }
 
     // testing delete product
@@ -64,7 +64,8 @@ public class AdminServiceImplTest {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
         adminService.addProduct(product);
         adminService.deleteProduct("Product1");
-        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("1"));
+        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("Product1"));
+
     }
 
     // testing view all subscriptions
@@ -89,25 +90,31 @@ public class AdminServiceImplTest {
     }
 
     // testing subscription activation
-    @Test
-    public void testActivateSubscription() {
-        Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
-        subscriptionService.addSubscription(subscription);
-        adminService.activateSubscription("Subscription1");
-        Subscription fetchedSubscription = subscriptionService.getSubscriptionById("Subscription1");
-        assertTrue(fetchedSubscription.isActive());
-    }
+   @Test
+    public void testDeactivateSubscription() {
+    Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
+    adminService.activateSubscription("Subscription1");
+
+    assertTrue(subscriptionService.getSubscriptionById("Subscription1").isActive());
+
+    adminService.deactivateSubscription("Subscription1");
+    Subscription fetchedSubscription = subscriptionService.getSubscriptionById("Subscription1");
+    assertFalse(fetchedSubscription.isActive());
+}
 
     // testing view all subscription
     @Test
-    public void testViewAllSubscriptions() {
-        Subscription subscription1 = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
-        Subscription subscription2 = new Subscription("Subscription2", "Product2", "Customer2", "Bi-Weekly", LocalDate.parse("2024-02-02"), LocalDate.parse("2024-03-02"), true);
-        subscriptionService.addSubscription(subscription1);
-        subscriptionService.addSubscription(subscription2);
-        List<Subscription> subscriptions = adminService.viewAllSubscriptions();
-        assertEquals(2, subscriptions.size());
-    }
+    public void testActivateSubscription() {
+    Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
+    subscriptionService.addSubscription(subscription);
+
+    // Ensure the subscription is inactive before activating it
+    assertFalse(subscriptionService.getSubscriptionById("Subscription1").isActive());
+
+    adminService.activateSubscription("Subscription1");
+    Subscription fetchedSubscription = subscriptionService.getSubscriptionById("Subscription1");
+    assertTrue(fetchedSubscription.isActive());
+}
 
 
 }
