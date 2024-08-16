@@ -44,10 +44,14 @@ public class ProductServiceImplTest {
     }
 
     // testing delete product
-    @Test
+  @Test
     public void testDeleteProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
         productService.addProduct(product);
+
+        // Ensure the product exists before deleting
+        assertNotNull(productService.getProductById("Product1"));
+
         productService.deleteProduct("Product1");
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById("Product1"));
     }
