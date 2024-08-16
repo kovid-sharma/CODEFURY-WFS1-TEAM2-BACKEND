@@ -38,10 +38,14 @@ public class CustomerServiceImplTest {
     }
 
     // testing cancel order
-    @Test
+     @Test
     public void testCancelOrder() {
         Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
         customerService.placeOrder(subscription);
+
+        // Ensure the subscription is active before canceling it
+        assertTrue(subscriptionService.getSubscriptionById("Subscription1").isActive());
+
         customerService.cancelOrder("Subscription1");
         Subscription canceledSubscription = subscriptionService.getSubscriptionById("Subscription1");
         assertFalse(canceledSubscription.isActive());
