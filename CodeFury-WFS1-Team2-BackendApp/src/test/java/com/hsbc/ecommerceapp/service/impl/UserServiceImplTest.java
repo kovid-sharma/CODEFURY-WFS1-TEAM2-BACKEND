@@ -1,9 +1,8 @@
-package com.hsbc.ecommerceapp;
+package com.hsbc.ecommerceapp.service.impl;
 
 import com.hsbc.ecommerceapp.exceptions.UserNotFoundException;
 import com.hsbc.ecommerceapp.exceptions.InvalidInputException;
 import com.hsbc.ecommerceapp.model.User;
-import com.hsbc.ecommerceapp.service.impl.UserServiceImpl;
 import com.hsbc.ecommerceapp.storage.UserStorage;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

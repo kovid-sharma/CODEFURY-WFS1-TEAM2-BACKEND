@@ -5,6 +5,7 @@ import com.hsbc.ecommerceapp.model.Subscription;
 import com.hsbc.ecommerceapp.service.AdminService;
 import com.hsbc.ecommerceapp.service.ProductService;
 import com.hsbc.ecommerceapp.service.SubscriptionService;
+import com.hsbc.ecommerceapp.storage.ProductStorage;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class AdminServiceImpl implements AdminService {
     public AdminServiceImpl(ProductService productService, SubscriptionService subscriptionService) {
         this.productService = productService;
         this.subscriptionService = subscriptionService;
+    }
+
+    public AdminServiceImpl(ProductStorage productStorage) {
     }
 
     @Override

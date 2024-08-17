@@ -1,65 +1,71 @@
-package com.hsbc.ecommerceapp;
+package com.hsbc.ecommerceapp.service.impl;
 
 import com.hsbc.ecommerceapp.exceptions.ProductNotFoundException;
 import com.hsbc.ecommerceapp.model.Product;
-import com.hsbc.ecommerceapp.service.impl.ProductServiceImpl;
 import com.hsbc.ecommerceapp.storage.ProductStorage;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class ProductServiceImplTest {
-    private static ProductStorage productStorage = null;
-    private static ProductServiceImpl productService = null;
 
-    // initializing before all tests
-    @BeforeAll
-    public static void setup() {
-        productStorage = new ProductStorage();
+    private ProductStorage productStorage;
+    private ProductServiceImpl productService;
+
+    @BeforeEach
+    public void setup() {
+        productStorage = mock(ProductStorage.class);
         productService = new ProductServiceImpl(productStorage);
     }
 
-    // testing add product
     @Test
     public void testAddProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
+
         productService.addProduct(product);
-        Product fetchedProduct = productStorage.getProductById("Product1");
-        assertNotNull(fetchedProduct);
-        assertEquals("Apple", fetchedProduct.getProductName());
+
+        verify(productStorage).addProduct(product);
     }
 
-    // testing update product
     @Test
     public void testUpdateProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
-        productService.addProduct(product);
+
+        when(productStorage.getProductById("Product1")).thenReturn(product);
+
         product.setPrice(5.5);
         productService.updateProduct(product);
-        Product updatedProduct = productStorage.getProductById("Product1");
-        assertEquals(5.5, updatedProduct.getPrice());
+
+        verify(productStorage).updateProduct(product);
     }
 
-    // testing delete product
     @Test
     public void testDeleteProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
-        productService.addProduct(product);
+
+        when(productStorage.getProductById("Product1")).thenReturn(product);
+
         productService.deleteProduct("Product1");
-        assertThrows(ProductNotFoundException.class, () -> productService.getProductById("Product1"));
+
+        verify(productStorage).deleteProduct("Product1");
     }
 
-    // testing view all products
     @Test
     public void testViewAllProducts() {
         Product product1 = new Product("Product1", "Apple", "Fresh Apple", 3.0, true);
         Product product2 = new Product("Product2", "Banana", "Fresh Banana", 2.0, true);
-        productService.addProduct(product1);
-        productService.addProduct(product2);
+
+        when(productStorage.getAllProducts()).thenReturn(Arrays.asList(product1, product2));
+
         List<Product> products = productService.getAllProducts();
+
         assertEquals(2, products.size());
+        verify(productStorage).getAllProducts();
     }
 }
