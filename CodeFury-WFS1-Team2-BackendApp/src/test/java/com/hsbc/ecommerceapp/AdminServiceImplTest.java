@@ -3,6 +3,7 @@ package com.hsbc.ecommerceapp;
 import com.hsbc.ecommerceapp.exceptions.ProductNotFoundException;
 import com.hsbc.ecommerceapp.model.Product;
 import com.hsbc.ecommerceapp.model.Subscription;
+import com.hsbc.ecommerceapp.model.User;
 import com.hsbc.ecommerceapp.service.AdminService;
 import com.hsbc.ecommerceapp.service.ProductService;
 import com.hsbc.ecommerceapp.service.SubscriptionService;
@@ -26,6 +27,7 @@ public class AdminServiceImplTest {
     private static SubscriptionStorage subscriptionStorage;
     private static ProductService productService;
     private static SubscriptionService subscriptionService;
+    private static User user = null;
 
     // initializing before all tests
     @BeforeAll
@@ -35,13 +37,14 @@ public class AdminServiceImplTest {
         productService = new ProductServiceImpl(productStorage);
         subscriptionService = new SubscriptionServiceImpl(subscriptionStorage, null);
         adminService = new AdminServiceImpl(productService, subscriptionService);
+        user = new User("User1", "john_wick", "john@123", "john.wick@abc.com", "admin");
     }
 
     // testing add product
     @Test
     public void testAddProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
-        adminService.addProduct(product);
+        adminService.addProduct(user, product);
         Product fetchedProduct = productService.getProductById("Product1");
         assertNotNull(fetchedProduct);
         assertEquals("Apple", fetchedProduct.getProductName());
@@ -51,9 +54,9 @@ public class AdminServiceImplTest {
     @Test
     public void testUpdateProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
-        adminService.addProduct(product);
+        adminService.addProduct(user, product);
         product.setPrice(5.5);
-        adminService.updateProduct(product);
+        adminService.updateProduct(user, product);
         Product updatedProduct = productService.getProductById("Product1");
         assertEquals(3.5, updatedProduct.getPrice());
     }
@@ -62,8 +65,8 @@ public class AdminServiceImplTest {
     @Test
     public void testDeleteProduct() {
         Product product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
-        adminService.addProduct(product);
-        adminService.deleteProduct("Product1");
+        adminService.addProduct(user, product);
+        adminService.deleteProduct(user, "Product1");
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById("1"));
     }
 
@@ -72,8 +75,8 @@ public class AdminServiceImplTest {
     public void testViewAllProducts() {
         Product product1 = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
         Product product2 = new Product("Product2", "Banana", "Fresh Banana", 3.0, true);
-        adminService.addProduct(product1);
-        adminService.addProduct(product2);
+        adminService.addProduct(user, product1);
+        adminService.addProduct(user, product2);
         List<Product> products = adminService.viewAllProducts();
         assertEquals(2, products.size());
     }
@@ -82,8 +85,8 @@ public class AdminServiceImplTest {
     @Test
     public void testDeactivateSubscription() {
         Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
-        adminService.activateSubscription("Subscription1");
-        adminService.deactivateSubscription("Subscription1");
+        adminService.activateSubscription(user, "Subscription1");
+        adminService.deactivateSubscription(user, "Subscription1");
         Subscription fetchedSubscription = subscriptionService.getSubscriptionById("Subscription1");
         assertFalse(fetchedSubscription.isActive());
     }
@@ -93,7 +96,7 @@ public class AdminServiceImplTest {
     public void testActivateSubscription() {
         Subscription subscription = new Subscription("Subscription1", "Product1", "Customer1", "Weekly", LocalDate.parse("2024-01-01"), LocalDate.parse("2024-02-01"), true);
         subscriptionService.addSubscription(subscription);
-        adminService.activateSubscription("Subscription1");
+        adminService.activateSubscription(user, "Subscription1");
         Subscription fetchedSubscription = subscriptionService.getSubscriptionById("Subscription1");
         assertTrue(fetchedSubscription.isActive());
     }

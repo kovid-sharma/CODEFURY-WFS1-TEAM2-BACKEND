@@ -3,13 +3,18 @@ package com.hsbc.ecommerceapp.model;
 import java.util.Objects;
 
 public class User {
-    protected String userId, userName, password, email;
+    protected String userId, userName, password, email, userType;
 
-    public User(String userId, String userName, String password, String email) {
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    public User(String userId, String userName, String password, String email, String userType) {
         this.userId = userId;
         this.userName = userName;
         this.password = password;
         this.email = email;
+        this.userType = userType;
     }
 
     public String getUserId() {
@@ -44,6 +49,10 @@ public class User {
         this.email = email;
     }
 
+    public String getUserType() {
+        return userType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,5 +74,9 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
+    }
+
+    public boolean isAdmin() {
+        return userType.equalsIgnoreCase("admin");
     }
 }

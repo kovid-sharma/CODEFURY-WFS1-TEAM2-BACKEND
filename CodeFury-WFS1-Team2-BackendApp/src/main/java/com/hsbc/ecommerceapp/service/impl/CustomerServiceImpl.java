@@ -3,7 +3,9 @@ package com.hsbc.ecommerceapp.service.impl;
 import com.hsbc.ecommerceapp.exceptions.InvalidInputException;
 import com.hsbc.ecommerceapp.exceptions.UserNotFoundException;
 import com.hsbc.ecommerceapp.model.Customer;
+import com.hsbc.ecommerceapp.model.Product;
 import com.hsbc.ecommerceapp.model.Subscription;
+import com.hsbc.ecommerceapp.model.User;
 import com.hsbc.ecommerceapp.service.CustomerService;
 import com.hsbc.ecommerceapp.service.SubscriptionService;
 import com.hsbc.ecommerceapp.storage.OrderStorage;
@@ -22,8 +24,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void placeOrder(Subscription subscription) {
-        subscriptionService.addSubscription(subscription);
+    public void placeOrder(User user, Product product) {
+        if(user.isAdmin())
+            throw new SecurityException(("User not a customer!"));
+        orderStorage.addOrder(user.getUserId(), product);
     }
 
     @Override
@@ -58,7 +62,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<Subscription> viewOrder(String customerId) {
+    public List<Product> viewOrder(String customerId) {
         return orderStorage.getOrderByCustomerId(customerId);
     }
 }

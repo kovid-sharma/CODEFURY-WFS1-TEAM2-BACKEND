@@ -13,18 +13,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserServiceImplTest {
     private static UserStorage userStorage;
     private static UserServiceImpl userService;
+    private static User user = null;
 
     // initializing before all tests
     @BeforeAll
     public static void setup() {
         userStorage = new UserStorage();
         userService = new UserServiceImpl(userStorage);
+        user = new User("User1", "john_wick", "password123", "john@wick.com", "customer");
     }
 
     // testing register new user
     @Test
     public void testRegisterUser() {
-        User user = new User("User1", "john_wick", "password123", "john@wick.com");
         userService.registerUser(user);
         User fetchedUser = userStorage.getUserById("User1");
         assertNotNull(fetchedUser);
@@ -34,7 +35,6 @@ public class UserServiceImplTest {
     // testing user login
     @Test
     public void testLoginUser() {
-        User user = new User("User1", "john_wick", "password123", "john@wick.com");
         userService.registerUser(user);
         User loggedInUser = userService.loginUser("john_wick", "password123");
         assertNotNull(loggedInUser);
@@ -44,7 +44,6 @@ public class UserServiceImplTest {
     // testing update user
     @Test
     public void testUpdateUser() {
-        User user = new User("User1", "john_wick", "password123", "john@wick.com");
         userService.registerUser(user);
         user.setEmail("john.wick@new.com");
         userService.updateUser(user);
@@ -55,7 +54,6 @@ public class UserServiceImplTest {
     // testing delete user
     @Test
     public void testDeleteUser() {
-        User user = new User("User1", "john_wick", "password123", "john@wick.com");
         userService.registerUser(user);
         userService.deleteUser("1");
         assertThrows(UserNotFoundException.class, () -> userStorage.getUserById("User1"));
