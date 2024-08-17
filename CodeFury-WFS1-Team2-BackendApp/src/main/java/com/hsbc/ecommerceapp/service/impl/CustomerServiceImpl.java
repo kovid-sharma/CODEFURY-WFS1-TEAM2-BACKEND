@@ -2,10 +2,7 @@ package com.hsbc.ecommerceapp.service.impl;
 
 import com.hsbc.ecommerceapp.exceptions.InvalidInputException;
 import com.hsbc.ecommerceapp.exceptions.UserNotFoundException;
-import com.hsbc.ecommerceapp.model.Customer;
-import com.hsbc.ecommerceapp.model.Product;
-import com.hsbc.ecommerceapp.model.Subscription;
-import com.hsbc.ecommerceapp.model.User;
+import com.hsbc.ecommerceapp.model.*;
 import com.hsbc.ecommerceapp.service.CustomerService;
 import com.hsbc.ecommerceapp.service.SubscriptionService;
 import com.hsbc.ecommerceapp.storage.OrderStorage;
@@ -18,23 +15,27 @@ public class CustomerServiceImpl implements CustomerService {
     private OrderStorage orderStorage;
     private UserStorage userStorage;
 
+    // constructor
     public CustomerServiceImpl(SubscriptionService subscriptionService, OrderStorage orderStorage) {
         this.subscriptionService = subscriptionService;
         this.orderStorage = orderStorage;
     }
 
+    // overriding place order
     @Override
-    public void placeOrder(User user, Product product) {
+    public void placeOrder(User user, Order order) {
         if(user.isAdmin())
             throw new SecurityException(("User not a customer!"));
-        orderStorage.addOrder(user.getUserId(), product);
+        orderStorage.addOrder(user.getUserId(), order);
     }
 
+    // overriding cancel order
     @Override
     public void cancelOrder(String subscriptionId) {
         subscriptionService.cancelSubscription(subscriptionId);
     }
 
+    // overriding  update customer info
     @Override
     public void updateCustomerInfo(String customerId, Customer updatedCustomer) throws UserNotFoundException, InvalidInputException {
         // validate the updated customer information
@@ -54,6 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
         userStorage.updateUser(existingCustomer);
     }
 
+    // overriding  change subscription plan
     @Override
     public void changeSubscriptionPlan(String subscriptionId, String newPlan) {
         Subscription subscription = subscriptionService.getSubscriptionById(subscriptionId);
@@ -61,6 +63,7 @@ public class CustomerServiceImpl implements CustomerService {
         subscriptionService.updateSubscription(subscription);
     }
 
+    // overriding view all orders
     @Override
     public List<Product> viewOrder(String customerId) {
         return orderStorage.getOrderByCustomerId(customerId);

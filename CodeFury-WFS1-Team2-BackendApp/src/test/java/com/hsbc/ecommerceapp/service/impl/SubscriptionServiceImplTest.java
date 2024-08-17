@@ -1,5 +1,6 @@
 package com.hsbc.ecommerceapp.service.impl;
 
+import com.hsbc.ecommerceapp.model.Product;
 import com.hsbc.ecommerceapp.model.Subscription;
 import com.hsbc.ecommerceapp.storage.OrderStorage;
 import com.hsbc.ecommerceapp.storage.SubscriptionStorage;
@@ -19,12 +20,14 @@ public class SubscriptionServiceImplTest {
     private SubscriptionStorage subscriptionStorage;
     private OrderStorage orderStorage;
     private SubscriptionServiceImpl subscriptionService;
+    private Product product = null;
 
     @BeforeEach
     public void setup() {
         subscriptionStorage = mock(SubscriptionStorage.class);
         orderStorage = mock(OrderStorage.class);
         subscriptionService = new SubscriptionServiceImpl(subscriptionStorage, orderStorage);
+        product = new Product("Product1", "Apple", "Fresh Apple", 5.0, true);
     }
 
     @Test
@@ -34,7 +37,7 @@ public class SubscriptionServiceImplTest {
         subscriptionService.addSubscription(subscription);
 
         verify(subscriptionStorage).addSubscription(subscription);
-        verify(orderStorage).addOrder(subscription.getCustomerId(), subscription);
+        verify(orderStorage).addOrder(subscription.getCustomerId(), product);
     }
 
     @Test

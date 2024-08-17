@@ -12,17 +12,19 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     private SubscriptionStorage subscriptionStorage;
     private OrderStorage orderStorage;
 
+    // constructor
     public SubscriptionServiceImpl(SubscriptionStorage subscriptionStorage, OrderStorage orderStorage) {
         this.subscriptionStorage = subscriptionStorage;
         this.orderStorage = orderStorage;
     }
 
+    // overriding add subscription
     @Override
     public void addSubscription(Subscription subscription) {
         subscriptionStorage.addSubscription(subscription);
-        orderStorage.addOrder(subscription.getCustomerId(), subscription);
     }
 
+    // overriding update subscription
     @Override
     public void updateSubscription(Subscription subscription) {
         if (subscriptionStorage.getSubscriptionById(subscription.getSubscriptionId()) == null)
@@ -30,6 +32,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionStorage.updateSubscription(subscription);
     }
 
+    // overriding cancel subscription
     @Override
     public void cancelSubscription(String subscriptionId) {
         if (subscriptionStorage.getSubscriptionById(subscriptionId) == null)
@@ -37,6 +40,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         subscriptionStorage.cancelSubscription(subscriptionId);
     }
 
+    // overriding get subscription by id
     @Override
     public Subscription getSubscriptionById(String subscriptionId) {
         Subscription subscription = subscriptionStorage.getSubscriptionById(subscriptionId);
@@ -45,6 +49,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscription;
     }
 
+    // overriding get all subscription
     @Override
     public List<Subscription> getAllSubscriptions() {
         return subscriptionStorage.getAllSubscriptions();

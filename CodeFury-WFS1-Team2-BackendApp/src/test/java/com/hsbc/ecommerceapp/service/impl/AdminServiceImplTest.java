@@ -1,6 +1,9 @@
 package com.hsbc.ecommerceapp.service.impl;
 
 import com.hsbc.ecommerceapp.model.Product;
+import com.hsbc.ecommerceapp.model.User;
+import com.hsbc.ecommerceapp.service.ProductService;
+import com.hsbc.ecommerceapp.service.SubscriptionService;
 import com.hsbc.ecommerceapp.storage.ProductStorage;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,13 +18,20 @@ public class AdminServiceImplTest {
 
     private AdminServiceImpl adminService;
     private ProductStorage productStorage;
+    private ProductService productService;
+    private SubscriptionService subscriptionService;
+    private User user;
 
     @BeforeEach
     public void setup() {
         // Mocking the ProductStorage dependency
-        productStorage = mock(ProductStorage.class);
+//        productStorage = mock(ProductStorage.class);
+        productService = mock(ProductService.class);
         // Injecting the mock into the AdminServiceImpl
-        adminService = new AdminServiceImpl(productStorage);
+//        adminService = new AdminServiceImpl(productStorage);
+        adminService = new AdminServiceImpl(productService, subscriptionService);
+
+        user = user = new User("User1", "john_wick", "password123", "john@wick.com", "customer");
     }
 
     @Test
@@ -30,7 +40,7 @@ public class AdminServiceImplTest {
         Product product = new Product("Product1", "Laptop", "High-end gaming laptop", 1200.0, true);
 
         // Act
-        adminService.addProduct(product);
+        adminService.addProduct(user, product);
 
         // Assert - Verify that addProduct was called once with the correct product
         verify(productStorage, times(1)).addProduct(product);
@@ -46,7 +56,7 @@ public class AdminServiceImplTest {
 
         // Act
         product.setPrice(1300.0);
-        adminService.updateProduct(product);
+        adminService.updateProduct(user, product);
 
         // Assert - Verify that updateProduct was called with the updated product
         verify(productStorage, times(1)).updateProduct(product);
@@ -61,7 +71,7 @@ public class AdminServiceImplTest {
         when(productStorage.getProductById("Product1")).thenReturn(product);
 
         // Act
-        adminService.deleteProduct("Product1");
+        adminService.deleteProduct(user, "Product1");
 
         // Assert - Verify that deleteProduct was called once with the correct product ID
         verify(productStorage, times(1)).deleteProduct("Product1");

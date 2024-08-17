@@ -9,10 +9,12 @@ import com.hsbc.ecommerceapp.storage.UserStorage;
 public class UserServiceImpl implements UserService {
     private UserStorage userStorage;
 
+    // constructor
     public UserServiceImpl(UserStorage userStorage) {
         this.userStorage = userStorage;
     }
 
+    // overriding add user
     @Override
     public void registerUser(User user) {
         if (user == null || user.getUserName() == null || user.getPassword() == null)
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
         userStorage.addUser(user);
     }
 
+    // overriding update user
     @Override
     public void updateUser(User user) {
         if (userStorage.getUserById(user.getUserId()) == null)
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService {
         userStorage.updateUser(user);
     }
 
+    // overriding delete user
     @Override
     public void deleteUser(String userId) {
         if (userStorage.getUserById(userId) == null)
@@ -34,6 +38,7 @@ public class UserServiceImpl implements UserService {
         userStorage.deleteUser(userId);
     }
 
+    // overriding login user
     @Override
     public User loginUser(String username, String password) {
         User user = userStorage.getUserByUserName(username);

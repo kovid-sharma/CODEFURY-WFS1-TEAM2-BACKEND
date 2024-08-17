@@ -36,7 +36,7 @@ public class OrderStorageTest {
         orderStorage.addOrder("Customer1", subscription1);
         orderStorage.addOrder("Customer1", subscription2);
 
-        List<Subscription> orders = orderStorage.getOrderByCustomerId("Customer1");
+        List<Subscription> orders = (List<Subscription>) orderStorage.getOrderById("Customer1");
         assertEquals(2, orders.size());
     }
 
