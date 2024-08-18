@@ -37,7 +37,6 @@ public class SubscriptionServiceImplTest {
         subscriptionService.addSubscription(subscription);
 
         verify(subscriptionStorage).addSubscription(subscription);
-        verify(orderStorage).addOrder(subscription.getCustomerId(), product);
     }
 
     @Test

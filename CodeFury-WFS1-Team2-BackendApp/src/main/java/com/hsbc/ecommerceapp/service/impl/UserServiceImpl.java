@@ -40,8 +40,8 @@ public class UserServiceImpl implements UserService {
 
     // overriding login user
     @Override
-    public User loginUser(String username, String password) {
-        User user = userStorage.getUserByUserName(username);
+    public User loginUser(String userId, String password) {
+        User user = userStorage.getUserById(userId);
         if (user == null || !user.getPassword().equals(password))
             throw new UserNotFoundException("Invalid username or password");
         return user;

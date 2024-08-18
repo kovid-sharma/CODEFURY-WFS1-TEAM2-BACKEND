@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserStorage {
+    // method to add a user
     public void addUser(User user) {
         String sql = "INSERT INTO users (id, username, password, userType) VALUES (?, ?, ?, ?)";
 
@@ -32,6 +33,7 @@ public class UserStorage {
         }
     }
 
+    // method to update a user
     public void updateUser(User user) {
         String sql = "UPDATE users SET username = ?, email = ?, password = ?, user_type = ? WHERE user_id = ?";
 
@@ -54,6 +56,7 @@ public class UserStorage {
         }
     }
 
+    // method to delete a user
     public void deleteUser(String userId) {
         String sql = "DELETE FROM users WHERE user_id = ?";
 
@@ -73,6 +76,7 @@ public class UserStorage {
         }
     }
 
+    // method to get a user by id
     public User getUserById(String userId) throws UserNotFoundException {
         String sql = "SELECT * FROM users WHERE user_id = ?";
         User user = null;
@@ -102,6 +106,7 @@ public class UserStorage {
         return user;
     }
 
+    // method to get all users
     public List<User> getAllUsers() {
         String sql = "SELECT * FROM users";
         List<User> users = new ArrayList<>();

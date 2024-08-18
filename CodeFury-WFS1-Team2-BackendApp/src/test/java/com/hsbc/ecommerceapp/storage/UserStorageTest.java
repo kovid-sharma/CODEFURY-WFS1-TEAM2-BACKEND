@@ -9,15 +9,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserStorageTest {
 
     private UserStorage userStorage;
+    private User user = null;
 
     @BeforeEach
     public void setup() {
         userStorage = new UserStorage();
+        user = new User("User1", "john_wick", "john@123", "user1@example.com", "customer");
     }
 
     @Test
     public void testAddUser() {
-        User user = new User("User1", "user1@example.com", "1234 Elm Street", "123-456-7890");
         userStorage.addUser(user);
 
         User fetchedUser = userStorage.getUserById("User1");
@@ -27,8 +28,6 @@ public class UserStorageTest {
 
     @Test
     public void testUpdateUser() {
-        User user = new User("User1", "user1@example.com", "1234 Elm Street", "123-456-7890");
-        userStorage.addUser(user);
         user.setEmail("updated@example.com");
         userStorage.updateUser(user);
 
@@ -38,7 +37,6 @@ public class UserStorageTest {
 
     @Test
     public void testDeleteUser() {
-        User user = new User("User1", "user1@example.com", "1234 Elm Street", "123-456-7890");
         userStorage.addUser(user);
         userStorage.deleteUser("User1");
 
@@ -48,10 +46,9 @@ public class UserStorageTest {
 
     @Test
     public void testGetUserByUserName() {
-        User user = new User("User1", "user1@example.com", "1234 Elm Street", "123-456-7890");
         userStorage.addUser(user);
 
-        User fetchedUser = userStorage.getUserByUserName("User1");
+        User fetchedUser = userStorage.getUserById("User1");
         assertNotNull(fetchedUser);
         assertEquals("user1@example.com", fetchedUser.getEmail());
     }
