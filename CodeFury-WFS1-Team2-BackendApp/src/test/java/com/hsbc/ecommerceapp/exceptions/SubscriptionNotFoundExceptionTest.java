@@ -11,6 +11,7 @@ class SubscriptionNotFoundExceptionTest {
         SubscriptionNotFoundException exception = new SubscriptionNotFoundException(message);
 
         assertEquals(message, exception.getMessage());
+        System.out.println("Subscription Not Found Exception Tested");
     }
 
     @Test
@@ -21,5 +22,6 @@ class SubscriptionNotFoundExceptionTest {
 
         assertEquals(message, exception.getMessage());
         assertEquals(cause, exception.getCause());
+        System.out.println("Subscription Not Found Exception with Cause Tested");
     }
 }

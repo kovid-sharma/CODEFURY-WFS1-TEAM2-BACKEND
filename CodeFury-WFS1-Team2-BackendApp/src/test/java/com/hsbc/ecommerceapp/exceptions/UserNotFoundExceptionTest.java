@@ -12,6 +12,7 @@ public class UserNotFoundExceptionTest {
             throw new UserNotFoundException(message);
         });
         assertEquals(message, exception.getMessage());
+        System.out.println("User Not Found Exception Tested");
     }
 
     @Test
@@ -23,5 +24,6 @@ public class UserNotFoundExceptionTest {
         });
         assertEquals(message, exception.getMessage());
         assertEquals(cause, exception.getCause());
+        System.out.println("User Not Found Exception with Cause Tested");
     }
 }

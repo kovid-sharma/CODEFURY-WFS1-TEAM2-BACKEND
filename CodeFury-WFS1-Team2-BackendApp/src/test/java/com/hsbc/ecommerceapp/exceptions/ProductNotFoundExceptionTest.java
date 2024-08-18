@@ -12,6 +12,7 @@ class ProductNotFoundExceptionTest {
             throw new ProductNotFoundException(message);
         });
         assertEquals(message, exception.getMessage());
+        System.out.println("Product Not Found Exception Tested");
     }
 
     @Test
@@ -23,5 +24,6 @@ class ProductNotFoundExceptionTest {
         });
         assertEquals(message, exception.getMessage());
         assertEquals(cause, exception.getCause());
+        System.out.println("Product Not Found Exception with Cause Tested");
     }
 }

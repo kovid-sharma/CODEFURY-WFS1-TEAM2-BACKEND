@@ -15,6 +15,7 @@ public class InvalidInputExceptionTest {
             throw new InvalidInputException(errorMessage);
         });
         assertEquals(errorMessage, exception.getMessage());
+        System.out.println("Invalid Input Exception Tested");
     }
 
     @Test
@@ -26,5 +27,6 @@ public class InvalidInputExceptionTest {
         });
         assertEquals(errorMessage, exception.getMessage());
         assertEquals(cause, exception.getCause());
+        System.out.println("Invalid Input Exception with Cause Tested");
     }
 }
